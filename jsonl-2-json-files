@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Check if output directory is provided as a parameter
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <output_directory> [jq_selector] [input_file.jsonl]"
+    exit 1
+fi
+
+# Assign output directory to a variable
+output_directory="$1"
+
+# Create the output directory if it doesn't exist
+mkdir -p "$output_directory"
+
+# Read the JSONL data from either file or stdin
+if [ "$#" -eq 3 ]; then
+    # Read from input file
+    jq_selector="$2"
+    input_file="$3"
+    exec 3< "$input_file"
+else
+    # Read from stdin
+    jq_selector=".id"
+    exec 3<&0
+fi
+
+# Initialize the running index as fallback for filenames
+index=1
+
+# Read the JSONL data line by line
+while IFS= read -r line; do
+    # Extract the filename using jq
+    filename=$(echo "$line" | jq -r "$jq_selector")
+
+    # If filename is empty, use running index
+    if [ -n "$filename" ]; then
+        filename="$index"
+        ((index++))
+    fi
+
+    # Slugify the filename
+    slug=$(echo "$filename" | sed 's/[^[:alnum:]]/-/g' | tr -s '-' | tr A-Z a-z)
+
+    # Save the JSON line to a separate file and beautify it using jq
+    echo "$line" | jq '.' > "$output_directory/$slug.json"
+done
+
+# Close the file descriptor
+exec 3<&-
