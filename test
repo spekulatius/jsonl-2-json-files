@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cat test.jsonl | ./jsonl-2-json-files ./test-results/json-files-by-index
+
+cat test.jsonl | ./jsonl-2-json-files ./test-results/json-files-by-id '.id'
+
+echo
+echo "Test completed."
+echo
+echo "If there is no \`git diff\` resulting from running this command the scripts work as expected."
+echo
