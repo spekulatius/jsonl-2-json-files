@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Check if jq is installed
+command -v jq >/dev/null 2>&1 || { echo >&2 "jq is required but it's not installed. Aborting."; exit 1; }
+
 # Check if all required arguments are provided
 if [ "$#" -lt 1 ]; then
   echo "Usage: $0 <output_directory> [jq_selector] [input_file.jsonl]"
@@ -39,6 +42,6 @@ while IFS= read -r line; do
     ((index++))
   fi
 
-  # Write the JSON line to the output file
-  echo "$line" > "$output_file"
+  # Pretty-print the JSON line using jq and write it to the output file
+  echo "$line" | jq '.' > "$output_file"
 done <<< "$input_data"

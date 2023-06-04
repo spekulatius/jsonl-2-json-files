@@ -6,26 +6,30 @@ Copy it somewhere.
 
 ## Usage
 
+Basic usage:
+
 ```bash
 $ ./jsonl-2-json-files
 Usage: ./jsonl-2-json-files <output_directory> [jq_selector] [input_file.jsonl]
 ```
 
-With indexed files (`1.json`, `2.json`, ...):
+To generate indexed files (`1.json`, `2.json`, ...):
 
 ```bash
 cat test.jsonl | ./jsonl-2-json-files /tmp/json-files
 ```
 
-With `id` extracted from the JSON for the json-file name:
+To use the `id` field from the JSON as the output filename:
 
 ```bash
 cat test.jsonl | ./jsonl-2-json-files /tmp/json-files '.id'
 ```
 
+The script automatically formats the JSON files for improved readability.
+
 ## Testing
 
-You can test this script by running the `./test` script:
+You can test the script by executing the `./test` script:
 
 ```bash
 ./test

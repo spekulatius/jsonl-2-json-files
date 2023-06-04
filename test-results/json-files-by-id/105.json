@@ -1,1 +1,7 @@
-{"id": 105, "first_name": "William", "last_name": "Taylor", "age": 32, "city": "San Francisco"}
+{
+  "id": 105,
+  "first_name": "William",
+  "last_name": "Taylor",
+  "age": 32,
+  "city": "San Francisco"
+}
